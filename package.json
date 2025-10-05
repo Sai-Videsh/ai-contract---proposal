@@ -8,6 +8,8 @@
     "dev:turbo": "next dev --turbo",
     "build": "next build",
     "start": "next start",
+    "prepare-db": "prisma db push",
+    "start:render": "npm run prepare-db && npm run start -- -p $PORT",
     "seed": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" prisma/seed.ts",
     "db:up": "docker compose up -d",
     "db:ps": "docker compose ps",
