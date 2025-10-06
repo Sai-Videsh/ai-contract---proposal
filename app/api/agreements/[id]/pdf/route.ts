@@ -4,6 +4,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { sha256 } from "js-sha256";
 import { launchChromium } from "@/lib/launchChromium";
 import { requireSession } from "@/lib/auth";
+import { getBaseUrl } from "@/lib/baseUrl";
 
 const s3 = new S3Client({
   region: process.env.S3_REGION,
@@ -49,7 +50,7 @@ export async function POST(_: Request, { params }: { params: { id: string }}) {
       const hash = sha256(pdfBuffer);
       const url = `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/${key}`;
       await prisma.agreement.update({ where: { id: ag.id }, data: { pdfUrl: url, hash } });
-      const base = process.env.APP_URL || "";
+      const base = getBaseUrl();
       return NextResponse.json({ url: `${base}/api/agreements/${ag.id}/pdf`, storage: "s3" });
     } catch (e) {
       // Fall through to inline
@@ -60,7 +61,7 @@ export async function POST(_: Request, { params }: { params: { id: string }}) {
     const url = `data:application/pdf;base64,${base64}`;
     const hash = sha256(pdfBuffer);
     await prisma.agreement.update({ where: { id: ag.id }, data: { pdfUrl: url, hash } });
-    const base = process.env.APP_URL || "";
+    const base = getBaseUrl();
     return NextResponse.json({ url: `${base}/api/agreements/${ag.id}/pdf`, storage: "inline" });
   }
   } catch (e: any) {

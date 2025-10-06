@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { requireSession } from "@/lib/auth";
 import { randomBytes } from "crypto";
+import { getBaseUrl } from "@/lib/baseUrl";
 
 function randomToken(len = 16) {
   return randomBytes(len).toString('hex');
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   } else {
     link = await prisma.publicLink.update({ where: { id: link.id }, data: { allowDownload: !!allowDownload, expiresAt: expiresAt || undefined } });
   }
-  const base = process.env.APP_URL || new URL(req.url).origin;
+  const base = getBaseUrl({ reqUrl: req.url });
   const url = `${base}/share/${link.token}`;
   return NextResponse.json({ url, token: link.token });
 }

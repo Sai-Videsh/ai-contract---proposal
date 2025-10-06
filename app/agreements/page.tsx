@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { getBaseUrl } from "@/lib/baseUrl";
 
 async function fetchAgreements(status?: string) {
   const qs = status ? `?status=${encodeURIComponent(status)}` : '';
   const jar = cookies();
   const cookieHeader = jar.getAll().map(c => `${c.name}=${c.value}`).join('; ');
-  const base = process.env.APP_URL || '';
-  const url = `${base}/api/agreements${qs}`.replace(/^[/]{2,}/, '/');
+  const base = getBaseUrl();
+  const url = `${base}/api/agreements${qs}`;
   const res = await fetch(url, { cache: 'no-store', headers: { cookie: cookieHeader } });
   if (!res.ok) throw new Error('Failed to load agreements');
   return res.json();
