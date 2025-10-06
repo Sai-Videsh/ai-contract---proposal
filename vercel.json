@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://ai-contract-proposal.onrender.com/api/$1" },
+    { "source": "/share/:token", "destination": "https://ai-contract-proposal.onrender.com/share/:token" },
+    { "source": "/share/:token/pdf", "destination": "https://ai-contract-proposal.onrender.com/api/share/:token/pdf" }
+  ]
+}
