@@ -8,7 +8,7 @@
     "dev:turbo": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "pw:install": "npx playwright install--with-deps chromium",
+    "pw:install": "npx playwright install --with-deps chromium",
     "prepare-db": "prisma db push ",
     "start:render": "npm run prepare-db && npm run pw:install && npm run start -- -p $PORT",
     "seed": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" prisma/seed.ts",
